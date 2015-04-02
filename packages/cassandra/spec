@@ -1,0 +1,8 @@
+---
+name: cassandra
+dependencies:
+- java
+- jetty
+files:
+- cassandra/apache-cassandra-1.2.16-bin.tar.gz
+- brokers/**/*

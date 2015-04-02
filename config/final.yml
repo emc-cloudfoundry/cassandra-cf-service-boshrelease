@@ -1,0 +1,7 @@
+---
+final_name: emc-cf-services
+blobstore:
+  provider: local
+  options:
+    blobstore_path: blobstore
+

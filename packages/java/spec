@@ -1,0 +1,4 @@
+---
+name: java
+files:
+- java/jre-7u55-linux-x64.tar.gz

@@ -1,0 +1,2 @@
+set -e
+cp -a jetty/* ${BOSH_INSTALL_TARGET}

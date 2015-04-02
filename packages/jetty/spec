@@ -1,0 +1,4 @@
+---
+name: jetty
+files:
+  - jetty/jetty-runner-8.1.0.RC5.jar
