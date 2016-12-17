@@ -18,4 +18,29 @@ templates:
   config/commitlog_archiving.properties.erb: conf/commitlog_archiving.properties
   config/cqlshrc.sample.erb: conf/cqlshrc.sample
 
-
+properties:
+  cassandra_server.cluster_name:
+    default: testcluster
+    description:
+  cassandra_server.num_tokens:
+    default: 256
+    description:
+  cassandra_server.internode_encryption:
+    default: none
+    description:
+  cassandra_server.client_server_encryption:
+    default: false
+    description:
+  cassandra_server.persistent_directory:
+    default: /var/vcap/store/cassandra_server
+    description:
+  cassandra_server.max_heap_size:
+    default: 4G
+    description:
+  cassandra_server.heap_newsize:
+    default: 800M
+    description:
+  cassandra_server.topology:
+    description:
+  cassandra_server.seeds:
+    description:

@@ -11,3 +11,7 @@ templates:
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/cassandra-broker-config.properties.erb: config/cassandra-broker-config.properties
+properties:
+  cassandra_server.seeds:
+    description: coma separated list of ips of seeds. TODO replace with bosh links
+
