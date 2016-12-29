@@ -9,12 +9,14 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/cassandra-jaas.config.erb: conf/cassandra-jaas.config
+  config/jvm.options.erb: conf/jvm.options
   config/cassandra.yaml.erb: conf/cassandra.yaml
   config/cassandra-env.sh.erb: conf/cassandra-env.sh
   config/cassandra-rackdc.properties.erb: conf/cassandra-rackdc.properties
   config/cassandra-topology.properties.erb: conf/cassandra-topology.properties
-  config/log4j-server.properties.erb: conf/log4j-server.properties
-  config/log4j-tools.properties.erb: conf/log4j-tools.properties
+  config/logback.xml.erb: conf/logback.xml
+  config/logback-tools.xml.erb: conf/logback-tools.xml
   config/commitlog_archiving.properties.erb: conf/commitlog_archiving.properties
   config/cqlshrc.sample.erb: conf/cqlshrc.sample
 
