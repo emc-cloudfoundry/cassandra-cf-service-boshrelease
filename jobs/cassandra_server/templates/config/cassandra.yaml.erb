@@ -422,7 +422,7 @@ seed_provider:
           # seeds is actually a comma-delimited list of addresses.
           # Ex: "<ip1>,<ip2>,<ip3>"
           #- seeds: <%=properties.cassandra_server.seeds%>
-          - seeds: <% peers = link('peers') %><% peers.instances.each do |instance| %><%= instance.address %>,<% end %>
+          - seeds: <% seeds = link('seeds') %><% seeds.instances.each do |instance| %><%= instance.address %>,<% end %>
 
 # For workloads with more data than can fit in memory, Cassandra's
 # bottleneck will be reads that need to fetch data from
