@@ -32,9 +32,9 @@ appender reference in the root level section below.
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>INFO</level>
     </filter>
-    <file><%=properties.cassandra_server.persistent_directory%>/system.log</file>
+    <file>/var/vcap/sys/log/cassandra_server/system.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern>${cassandra.logdir}/system.log.%i.zip</fileNamePattern>
+      <fileNamePattern>/var/vcap/sys/log/cassandra_server/system.log.%i.zip</fileNamePattern>
       <minIndex>1</minIndex>
       <maxIndex>20</maxIndex>
     </rollingPolicy>
@@ -49,9 +49,9 @@ appender reference in the root level section below.
   <!-- DEBUGLOG rolling file appender to debug.log (all levels) -->
 
   <appender name="DEBUGLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${cassandra.logdir}/debug.log</file>
+    <file>/var/vcap/sys/log/cassandra_server/debug.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern><%=properties.cassandra_server.persistent_directory%>/debug.log.%i.zip</fileNamePattern>
+      <fileNamePattern>/var/vcap/sys/log/cassandra_server/debug.log.%i.zip</fileNamePattern>
       <minIndex>1</minIndex>
       <maxIndex>20</maxIndex>
     </rollingPolicy>
