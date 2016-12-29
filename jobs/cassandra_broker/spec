@@ -1,7 +1,7 @@
 ---
 name: cassandra_broker
 packages:
-- java
+- openjdk
 - cassandra
 - jetty
 templates:

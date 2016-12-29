@@ -7,10 +7,10 @@ ulimit -n 131072
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/cassandra_broker/helpers/ctl_setup.sh 'cassandra_broker'
 
-export JAVA_HOME=/var/vcap/packages/java/jre1.7.0_55
-export PATH=$PATH:/var/vcap/packages/java/jre1.7.0_55/bin
+export JAVA_HOME=/var/vcap/packages/openjdk
+export PATH=$PATH:/var/vcap/packages/openjdk/bin
 
-JETTY_JAR=/var/vcap/packages/jetty/jetty-runner-8.1.0.RC5.jar
+JETTY_JAR=/var/vcap/packages/jetty/jetty-runner-9.4.0.v20161208.jar
 CASSANDRA_BROKER_WAR=/var/vcap/packages/cassandra/brokers/cassandra/build/libs/cassandra.war
 
 export LANG=en_US.UTF-8

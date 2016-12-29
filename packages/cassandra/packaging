@@ -8,5 +8,5 @@ export HOME=/var/vcap
 
 cp -a brokers $BOSH_INSTALL_TARGET/brokers
 
-tar -zxf cassandra/apache-cassandra-1.2.16-bin.tar.gz
-cp -a apache-cassandra-1.2.16/* $BOSH_INSTALL_TARGET
+tar -zxf cassandra/apache-cassandra-3.9-bin.tar.gz
+cp -a apache-cassandra-3.9/* $BOSH_INSTALL_TARGET

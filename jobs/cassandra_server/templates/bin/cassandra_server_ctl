@@ -13,8 +13,8 @@ export LANG=en_US.UTF-8
 export CASSANDRA_BIN=/var/vcap/packages/cassandra/bin
 export CASSANDRA_CONF=/var/vcap/jobs/cassandra_server/conf
 
-export JAVA_HOME=/var/vcap/packages/java/jre1.7.0_55
-export PATH=$PATH:/var/vcap/packages/java/jre1.7.0_55/bin
+export JAVA_HOME=/var/vcap/packages/openjdk
+export PATH=$PATH:/var/vcap/packages/openjdk/bin
 
 case $1 in
 
