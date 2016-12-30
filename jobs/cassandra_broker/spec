@@ -4,6 +4,9 @@ packages:
 - openjdk
 - cassandra
 - jetty
+consumes:
+- name: seeds
+  type: cassandra_seeds
 templates:
   bin/cassandra_broker_ctl: bin/cassandra_broker_ctl
   bin/monit_debugger: bin/monit_debugger
@@ -11,7 +14,4 @@ templates:
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/cassandra-broker-config.properties.erb: config/cassandra-broker-config.properties
-properties:
-  cassandra_server.seeds:
-    description: coma separated list of ips of seeds. TODO replace with bosh links
-
+properties: {}

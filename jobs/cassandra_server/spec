@@ -50,5 +50,3 @@ properties:
     description:
   cassandra_server.topology:
     description:
-  cassandra_server.seeds:
-    description:
