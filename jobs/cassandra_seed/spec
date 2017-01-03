@@ -1,0 +1,11 @@
+---
+name: seed
+packages: []
+consumes:
+- name: seeds
+  type: cassandra_seeds
+provides:
+- name: seeds
+  type: cassandra_seeds
+templates: {}
+properties: {}
