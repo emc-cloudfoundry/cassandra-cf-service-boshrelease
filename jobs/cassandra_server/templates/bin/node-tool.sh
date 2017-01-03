@@ -3,9 +3,6 @@
 set -e # exit immediately if a simple command exits with a non-zero status.
 set -u # report the usage of uninitialized variables.
 
-ulimit -n 131072
-
-
 export LANG=en_US.UTF-8
 
 export CASSANDRA_BIN=/var/vcap/packages/cassandra/bin
@@ -17,6 +14,6 @@ export PATH=$PATH:/var/vcap/packages/openjdk/bin
 export CASSANDRA_CONF=/var/vcap/jobs/cassandra_server/conf
 
 pushd /var/vcap/packages/cassandra/bin
-exec chpst -u vcap:vcap ./nodetools status
+exec chpst -u vcap:vcap /var/vcap/packages/cassandra/bin/nodetool status
 popd
 exit 0
