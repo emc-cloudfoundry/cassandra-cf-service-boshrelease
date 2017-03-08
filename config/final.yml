@@ -3,5 +3,5 @@ final_name: emc-cf-services
 blobstore:
   provider: s3 
   options:
-    blobstore_path: blobstore
+    bucket_name: orange-cassandra-cf-service-boshrelease 
 
