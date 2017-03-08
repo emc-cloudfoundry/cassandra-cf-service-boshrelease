@@ -5,5 +5,5 @@ dependencies:
 - jetty
 files:
 - brokers/**/*
-#- cassandra/apache-cassandra-1.2.16-bin.tar.gz
+- openjdk/**/*
 - cassandra/apache-cassandra-3.9-bin.tar.gz
