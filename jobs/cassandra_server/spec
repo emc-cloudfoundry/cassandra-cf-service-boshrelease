@@ -11,6 +11,7 @@ templates:
   bin/monit_debugger: bin/monit_debugger
   bin/node-tool.sh: bin/node-tool.sh
   bin/cql-sh.sh: bin/cql-sh.sh
+  tools/cassandra-stress.sh: tools/cassandra-stress.sh
   bin/cassandra-cli.sh: bin/cassandra-cli.sh
   bin/clean-snapshot.sh: bin/clean-snapshot.sh 
   data/properties.sh.erb: data/properties.sh
