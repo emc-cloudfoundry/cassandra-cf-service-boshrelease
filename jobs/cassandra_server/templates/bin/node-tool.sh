@@ -14,6 +14,13 @@ export PATH=$PATH:/var/vcap/packages/openjdk/bin
 export CASSANDRA_CONF=/var/vcap/jobs/cassandra_server/conf
 
 pushd /var/vcap/packages/cassandra/bin
-exec chpst -u vcap:vcap /var/vcap/packages/cassandra/bin/nodetool status
+if [ $# -eq 0 ];
+then
+        exec chpst -u vcap:vcap /var/vcap/packages/cassandra/bin/nodetool status
+popd
+exit 0
+fi
+
+exec chpst -u vcap:vcap /var/vcap/packages/cassandra/bin/nodetool "$@"
 popd
 exit 0

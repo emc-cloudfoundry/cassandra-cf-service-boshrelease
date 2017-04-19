@@ -15,6 +15,13 @@ export PATH=$PATH:/var/vcap/packages/openjdk/bin:$CASSANDRA_BIN:$CASSANDRA_CONF:
 ## export CASSANDRA_CONF=/var/vcap/jobs/cassandra_server/conf
 
 pushd /var/vcap/packages/cassandra/tools/bin
-exec chpst -u vcap:vcap /var/vcap/packages/cassandra/tools/bin/cassandra-stress write n=10 
+if [ $# -eq 0 ];
+then
+	exec chpst -u vcap:vcap /var/vcap/packages/cassandra/tools/bin/cassandra-stress write n=10
+popd
+exit 0
+fi
+
+exec chpst -u vcap:vcap /var/vcap/packages/cassandra/tools/bin/cassandra-stress "$@"
 popd
 exit 0
