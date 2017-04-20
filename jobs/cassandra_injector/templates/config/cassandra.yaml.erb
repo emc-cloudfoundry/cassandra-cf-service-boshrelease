@@ -1,0 +1,70 @@
+cluster_name: <%=propertiescassandra_injector.cluster_name%>
+num_tokens: <%=propertiescassandra_injector.num_tokens%>
+hinted_handoff_enabled: <%=propertiescassandra_injector.hinted_handoff_enabled%>
+max_hint_window_in_ms: <%=propertiescassandra_injector.max_hint_window_in_ms%>
+hinted_handoff_throttle_in_kb: <%=propertiescassandra_injector.hinted_handoff_throttle_in_kb%>
+max_hints_delivery_threads: <%=propertiescassandra_injector.max_hints_delivery_threads%>
+authenticator: <%=propertiescassandra_injector.authenticator%>
+authorizer: <%=propertiescassandra_injector.authorizer%>
+permissions_validity_in_ms: <%=propertiescassandra_injector.permissions_validity_in_ms%>
+partitioner: <%=propertiescassandra_injector.partitioner%>
+data_file_directories:
+    - <%=propertiescassandra_injector.persistent_directory%>/<%=propertiescassandra_injector.cluster_name%>/data
+hints_directory: <%=propertiescassandra_injector.persistent_directory%>/<%=propertiescassandra_injector.cluster_name%>/hint
+commitlog_directory: <%=propertiescassandra_injector.persistent_directory%>/<%=propertiescassandra_injector.cluster_name%>/commitlog
+disk_failure_policy: <%=propertiescassandra_injector.disk_failure_policy%>
+key_cache_size_in_mb: <%=propertiescassandra_injector.key_cache_size_in_mb%>
+key_cache_save_period:  <%=propertiescassandra_injector.key_cache_save_period%>
+row_cache_size_in_mb: <%=propertiescassandra_injector.row_cache_size_in_mb%>
+row_cache_save_period: <%=propertiescassandra_injector.row_cache_save_period%>
+saved_caches_directory: <%=propertiescassandra_injector.persistent_directory%>/<%=propertiescassandra_injector.cluster_name%>/saved_caches
+commitlog_sync: <%=propertiescassandra_injector.commitlog_sync%>
+commitlog_sync_period_in_ms:  <%=propertiescassandra_injector.commitlog_sync_period_in_ms%>
+commitlog_segment_size_in_mb:  <%=propertiescassandra_injector.commitlog_segment_size_in_mb%>
+seed_provider:
+    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+      parameters:
+          - seeds: <% seeds = link('seeds') %><% seeds.instances.each do |instance| %><%= instance.address %>,<% end %>
+concurrent_reads: <%=propertiescassandra_injector.concurrent_reads%>
+concurrent_writes: <%=propertiescassandra_injector.concurrent_writes%>
+file_cache_size_in_mb: <%=propertiescassandra_injector.file_cache_size_in_mb%>
+memtable_flush_writers: <%=propertiescassandra_injector.memtable_flush_writers%>
+trickle_fsync: <%=propertiescassandra_injector.trickle_fsync%>
+trickle_fsync_interval_in_kb: <%=propertiescassandra_injector.trickle_fsync_interval_in_kb%>
+storage_port: <%=propertiescassandra_injector.storage_port%>
+ssl_storage_port: <%=propertiescassandra_injector.ssl_storage_port%>
+listen_address: <%= spec.networks.to_h.values.first.ip %>
+start_native_transport: <%=propertiescassandra_injector.start_native_transport%>
+native_transport_port: <%=propertiescassandra_injector.native_transport_port%>
+native_transport_max_threads: <%=propertiescassandra_injector.native_transport_max_threads%>
+native_transport_max_frame_size_in_mb: <%=propertiescassandra_injector.native_transport_max_frame_size_in_mb%>
+start_rpc: <%=propertiescassandra_injector.start_rpc%>
+rpc_address: <%=propertiescassandra_injector.rpc_address%>
+rpc_port: <%=propertiescassandra_injector.rpc_port%>
+rpc_keepalive: <%=propertiescassandra_injector.rpc_keepalive%>
+rpc_server_type: <%=propertiescassandra_injector.rpc_server_type%>
+rpc_min_threads: <%=propertiescassandra_injector.rpc_min_threads%>
+rpc_max_threads: <%=propertiescassandra_injector.rpc_max_threads%>
+thrift_framed_transport_size_in_mb: <%=propertiescassandra_injector.thrift_framed_transport_size_in_mb%>
+incremental_backups: <%=propertiescassandra_injector.incremental_backups%>
+snapshot_before_compaction: <%=propertiescassandra_injector.snapshot_before_compaction%>
+auto_snapshot: <%=propertiescassandra_injector.auto_snapshot%>
+tombstone_warn_threshold: <%=propertiescassandra_injector.tombstone_warn_threshold%>
+tombstone_failure_threshold: <%=propertiescassandra_injector.tombstone_failure_threshold%>
+column_index_size_in_kb: <%=propertiescassandra_injector.column_index_size_in_kb%>
+concurrent_compactors: <%=propertiescassandra_injector.concurrent_compactors%>
+read_request_timeout_in_ms: <%=propertiescassandra_injector.read_request_timeout_in_ms%>
+range_request_timeout_in_ms: <%=propertiescassandra_injector.range_request_timeout_in_ms%>
+write_request_timeout_in_ms: <%=propertiescassandra_injector.write_request_timeout_in_ms%>
+cas_contention_timeout_in_ms: <%=propertiescassandra_injector.cas_contention_timeout_in_ms%>
+truncate_request_timeout_in_ms: <%=propertiescassandra_injector.truncate_request_timeout_in_ms%>
+request_timeout_in_ms: <%=propertiescassandra_injector.request_timeout_in_ms%>
+cross_node_timeout: <%=propertiescassandra_injector.cross_node_timeout%>
+phi_convict_threshold: <%=propertiescassandra_injector.phi_convict_threshold%>
+endpoint_snitch: <%=propertiescassandra_injector.endpoint_snitch%>
+dynamic_snitch_update_interval_in_ms: <%=propertiescassandra_injector.dynamic_snitch_update_interval_in_ms%>
+dynamic_snitch_reset_interval_in_ms: <%=propertiescassandra_injector.dynamic_snitch_reset_interval_in_ms%>
+dynamic_snitch_badness_threshold: <%=propertiescassandra_injector.dynamic_snitch_badness_threshold%>
+request_scheduler: <%=propertiescassandra_injector.request_scheduler%>
+internode_compression: <%=propertiescassandra_injector.internode_compression%>
+inter_dc_tcp_nodelay: <%=propertiescassandra_injector.inter_dc_tcp_nodelay%>
