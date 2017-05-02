@@ -102,12 +102,13 @@ Bosh vms will list out the IP address for Cassandra VMs. Cassandra data is store
 
 ###Log Files
 
-There are 3 places that have log files related to cassandra
+There are 4 places that have log files related to cassandra
 * Cassandra Broker - The logs can be found at /var/vcap/sys/log/cassandra_broker. This will basically log all the service broker code about creation/deletion of service/keyspaces etc.
 * Cassandra Server - The logs can be found at /var/vcap/sys/log/cassandra_server. This will basically log the cassandra server startup logs and is helpful in determing what went wrong during startup
+* Cassandra Seed - The logs can be found at /var/vcap/sys/log/cassandra_seed. This will basically log the cassandra server startup logs and is helpful in determing what went wrong during startup
 * Cassandra runtime log - The logs can be found at /var/vcap/store/cassandra_server/system.log in the same directory where data/commitlog is present.
 
-###Running Nodetool/Cassandra-cli
+###Running Nodetool/Cassandra-cli/Cassandra-Stress
 
 If you are SSH'ed into the cassandra VM and need to run the nodetool or cassandra-cli provided out of the box from cassandra, run this command from with the Casasndra VM
 ```sh
@@ -126,10 +127,16 @@ To run cassandra-cli run this command
 
 When a keyspace is deleted/dropped cassandra takes a snapshot of the keyspace for security/backup purpose. if you wish to remove the snapshot you will have to do it manually by running this command
 ```sh
-JAVA_HOME=/var/vcap/packages/java/jre1.7.0_55 CASSANDRA_CONF=/var/vcap/jobs/cassandra_server/conf ./nodetool clearsnapshot  
+cd /var/vcap/packages/cassandra_server/bin (or cd /var/vcap/packages/cassandra_seed/bin or cd /var/vcap/packages/cassandra_injector repectively if you are ou a cassandra server, seed or injector node)
+./nodetool clearsnapshot  
 ```
 
 ##Future Enhancements
+## You can now run any arguments with all the binaries below (nodetool, cassandra-stress) 
+## and also cql-sh with all kind of possible arguments
+```sh
+cd /var/vcap/packages/cassandra_server/bin (or cd /var/vcap/packages/cassandra_seed/bin or cd /var/vcap/packages/cassandra_injector repectively if you are ou a cassandra server, seed or injector node)
+./nodetool status -r    (to obtain all the hostname of your cluster and to use one or more of it to connect with)
 
 ###Authorization
 
