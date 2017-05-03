@@ -130,7 +130,7 @@ properties:
     default: 256
     description:
   cassandra_seed.start_rpc:
-    default: false
+    default: true
     description:
   cassandra_seed.rpc_address:
     default: localhost
@@ -223,10 +223,10 @@ properties:
     default: true
     description:
   cassandra_seed.max_heap_size:
-    default: 4G
+    default: 8G
     description:
   cassandra_seed.heap_newsize:
-    default: 800M
+    default: 1G
     description:
   cassandra_seed.topology:
     description:

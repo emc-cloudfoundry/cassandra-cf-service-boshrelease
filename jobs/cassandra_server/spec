@@ -126,7 +126,7 @@ properties:
     default: 256
     description:
   cassandra_server.start_rpc:
-    default: false
+    default: true
     description:
   cassandra_server.rpc_address:
     default: localhost
@@ -219,10 +219,10 @@ properties:
     default: true
     description:
   cassandra_server.max_heap_size:
-    default: 4G
+    default: 8G
     description:
   cassandra_server.heap_newsize:
-    default: 800M
+    default: 1G 
     description:
   cassandra_server.topology:
     description:
