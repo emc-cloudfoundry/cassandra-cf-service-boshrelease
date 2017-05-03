@@ -52,13 +52,13 @@ properties:
     default: 2
     description: nombre de thread pour gerer les hints. A augmenter si cluster multi datacenter.
   cassandra_seed.authenticator:
-    default: AllowAllAuthenticator 
+    default: PasswordAuthenticator 
     description: AllowAllAuthenticator c.a.d pas de controle sinon possible avec  PasswordAuthenticator.
   cassandra_seed.authorizer:
-    default: AllowAllAuthorizer 
+    default: CassandraAuthorizer
     description: pour gerer les droits dans la bdd. Controle fin avec CassandraAuthorizer.
   cassandra_seed.permissions_validity_in_ms:
-    default: 2000 
+    default: 4000 
     description: duree de validite des permissions stockees en cache.Se desactive en positionnant a 0 avec AllowAllAuthorizer.
   cassandra_seed.partitioner:
     default: org.apache.cassandra.dht.Murmur3Partitioner 

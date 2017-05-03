@@ -48,10 +48,10 @@ properties:
     default: 2
     description: nombre de thread pour gerer les hints. A augmenter si cluster multi datacenter.
   cassandra_injector.authenticator:
-    default: AllowAllAuthenticator 
+    default: PasswordAuthenticator
     description: AllowAllAuthenticator c.a.d pas de controle sinon possible avec  PasswordAuthenticator.
   cassandra_injector.authorizer:
-    default: AllowAllAuthorizer 
+    default: CassandraAuthorizer
     description: pour gerer les droits dans la bdd. Controle fin avec CassandraAuthorizer.
   cassandra_injector.permissions_validity_in_ms:
     default: 2000 
