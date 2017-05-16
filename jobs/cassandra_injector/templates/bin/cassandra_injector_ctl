@@ -16,6 +16,8 @@ export CASSANDRA_CONF=/var/vcap/jobs/cassandra_injector/conf
 export JAVA_HOME=/var/vcap/packages/openjdk
 export PATH=$PATH:/var/vcap/packages/openjdk/bin
 
+#sudo swapoff -a
+
 case $1 in
 
   start)
