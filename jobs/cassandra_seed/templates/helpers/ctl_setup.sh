@@ -79,3 +79,6 @@ done
 PIDFILE=$RUN_DIR/$output_label.pid
 
 echo '$PATH' $PATH
+/sbin/swapoff -a
+echo 'verify swap deactivate : ' `swapon -s`
+

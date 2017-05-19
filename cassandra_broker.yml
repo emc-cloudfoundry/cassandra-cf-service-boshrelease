@@ -55,6 +55,7 @@ resource_pools:
 jobs:
 - name: cassandra_broker_server
   template:
+  - cassandra_seed
   - cassandra_server
   - cassandra_broker
   instances: 4

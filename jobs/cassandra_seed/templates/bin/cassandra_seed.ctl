@@ -16,6 +16,7 @@ export CASSANDRA_CONF=/var/vcap/jobs/cassandra_seed/conf
 export JAVA_HOME=/var/vcap/packages/openjdk
 export PATH=$PATH:/var/vcap/packages/openjdk/bin
 
+
 case $1 in
 
   start)
@@ -37,4 +38,5 @@ case $1 in
     ;;
 
 esac
+
 exit 0
