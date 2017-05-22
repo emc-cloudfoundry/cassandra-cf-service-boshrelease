@@ -82,8 +82,13 @@ echo '$PATH' $PATH
 /sbin/swapoff -a
 echo 'verify swap deactivate : ' `swapon -s`
 
-mkdir $JOB_DIR/tools/bin/graph
+if [[ -d ${JOB_DIR}/tools/bin/graph ]]
+then
+ rm -rf $JOB_DIR/tools/bin/graph
+fi
+mkdir -p $JOB_DIR/tools/bin/graph
 chmod 777 $JOB_DIR/tools/bin/graph
 echo ' verif creation rep graph : ' `ls -ltr $JOB_DIR/tools/bin/graph`
 chmod +x  $JOB_DIR/tools/bin/cassandra-stress.sh
 echo ' verif cassandra-stress : ' `ls -ltr $JOB_DIR/tools/bin/cassandra-stress.sh`
+
