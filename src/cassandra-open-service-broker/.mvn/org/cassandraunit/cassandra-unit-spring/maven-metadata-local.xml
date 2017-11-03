@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.cassandraunit</groupId>
+  <artifactId>cassandra-unit-spring</artifactId>
+  <versioning>
+    <versions>
+      <version>3.3.0.3-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20171103153500</lastUpdated>
+  </versioning>
+</metadata>

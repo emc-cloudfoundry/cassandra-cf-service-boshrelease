@@ -1,0 +1,4 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Fri Nov 03 16:35:00 CET 2017
+cassandra-unit-spring-3.3.0.3-SNAPSHOT.jar>=
+cassandra-unit-spring-3.3.0.3-SNAPSHOT.pom>=
