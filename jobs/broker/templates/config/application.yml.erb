@@ -1,0 +1,32 @@
+---
+<% require "json" -%>
+
+logging:
+  level: <%= p('broker.log_level').to_json %>
+
+management:
+  context-path: /admin
+
+pidfile: /var/vcap/sys/run/broker/broker.pid
+
+security:
+  user:
+    name: <%= p('broker.user').to_json %>
+    password: <%= p('broker.password').to_json %>
+
+spring:
+  main:
+    show-banner: true
+  data:
+    cassandra:
+      cluster-name: <%= link('seeds').p('cluster_name').to_json %>
+      password: <%= link('seeds').p('cassandra_password').to_json %>
+      contact-points: <%= (link('seeds').instances.map { |instance| instance.address }).join(",").to_json %>
+      username: cassandra
+      port: <%= link('seeds').p('native_transport_port').to_json %>
+      ssl: <%= link('seeds').p('client_encryption.enabled').to_json %>
+
+server:
+  port: <%= p('broker.port').to_json %>
+
+catalog_yml: <%= p('broker.catalog_yml').to_json %>

@@ -1,0 +1,5 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Fri Nov 03 16:34:09 CET 2017
+cassandra-unit-3.3.0.3-SNAPSHOT.jar>=
+cassandra-unit-3.3.0.3-SNAPSHOT.pom>=
+cassandra-unit-3.3.0.3-SNAPSHOT-bin.tar.gz>=

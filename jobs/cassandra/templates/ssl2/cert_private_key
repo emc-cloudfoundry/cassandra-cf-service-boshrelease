@@ -1,0 +1,1 @@
+<% if_p('cert.private_key') do |private_key| %><%= private_key %><% end %>

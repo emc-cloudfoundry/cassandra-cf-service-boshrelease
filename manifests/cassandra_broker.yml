@@ -1,0 +1,87 @@
+---
+name: cassandra_broker
+director_uuid: e98e53b3-3b48-4790-8f94-906d0bd5c105
+release:
+  name: cassandra_service_git
+  version: latest
+
+compilation:
+  workers: 1
+  cloud_properties:
+      cpu: 2
+      disk: 8192
+      ram: 2048
+  network: default
+  reuse_compilation_vms: true
+
+networks:
+  - name: default
+    subnets:
+    - reserved:
+      - x.x.x.x - x.x.x.x 
+      static:
+      - x.x.x.x - x.x.x.x
+      range: x.x.x.x/24
+      gateway: x.x.x.x
+      dns:
+      - x.x.x.x
+      - x.x.x.x
+      cloud_properties:
+       name : abc
+
+
+update:
+  canaries: 2
+  canary_watch_time: 30000-60000
+  update_watch_time: 30000-60000
+  max_in_flight: 2
+  max_errors: 1
+
+resource_pools:
+- name: cass_service_res
+  network: default
+  stemcell:
+    name: bosh-vsphere-esxi-ubuntu-trusty-go_agent-hardened
+    version: latest
+  size: 4
+  cloud_properties:
+    cpu: 2
+    ram: 8192
+    disk: 16384
+  env:
+      bosh:
+        password: $6$2f6qtRfO$oJOeKk/ZDNb7PWnvMiXDC/HstKiLiZCBHP32KHFVeM9rXgs4W/JJiI4a/eHoddhxJzorLYgi2JUQiOKxZko4M.
+
+jobs:
+- name: cassandra_broker_server
+  template:
+  - cassandra_seed
+  - cassandra_server
+  - cassandra_broker
+  instances: 4
+  resource_pool: cass_service_res
+  persistent_disk: 16384
+  networks:
+  - name: default
+    static_ips:
+    - 10.8.32.60
+    - 10.8.32.61
+    - 10.8.32.62
+    - 10.8.32.63
+
+properties:
+  cassandra_server:
+     cluster_name: testcluster
+     num_tokens: 256
+     internode_encryption: none
+     client_server_encryption: false
+     seeds: 10.8.32.60,10.8.32.61,10.8.32.62
+     persistent_directory: /var/vcap/store/cassandra_server
+     max_heap_size: 4G
+     heap_newsize: 800M
+     topology:
+       - 10.8.32.60=DC1:RAC1
+       - 10.8.32.61=DC1:RAC1
+       - 10.8.32.62=DC1:RAC1
+       - 10.8.32.63=DC1:RAC1
+

@@ -1,136 +1,129 @@
-# Cassandra CF Service
+Cassandra BOSH release
+======================
 
-##Introduction
+This BOSH Release allows you to easily roll-out and maintain
+[Cassandra](http://cassandra.apache.org/) clusters, with the power of
+[BOSH](https://bosh.io).
 
-This page describes the architecture of Cassandra service for CloudFoundry using the new Service Broker API version 2.
+In the `deployment/` directory, you'll find BOSH 2.0 deployment manifests and
+operations files. They cover:
 
-##Components
+- Cloud Foundry integration, with [Service Broker](https://www.openservicebrokerapi.org)
+  deployment, sanity tests & registration.
 
-###Casssandra Broker
+- Integration with the [SHIELD](https://shieldproject.io/) backup solution
+  ([v7](https://github.com/gstackio/gk-shield-boshrelease/releases/tag/v7.0.4)
+  and [v8](https://github.com/starkandwayne/shield-boshrelease/releases/tag/v8.0.9)).
 
-The cassandra broker implements the 5 REST endpoints required by Cloud Foundry to write V2 services. Cassandra Broker is divided into 3 components
-* The Broker code itself that implements the 5 REST endpoints
-* Cassandra Admin Service which uses Cassandra DataStax client to connect to runnning cassandra cluster and create/deletes keyspace
-* H2 Database which saves service related meta deta (For eg. service id, credentials, # of services)
+- Support for client-server TLS encryption and server-side inter-nodes mutual TLS.
 
-###Cassandra Server
-
-The Cassandra server (node) is deployed on a seperate VM and can be deployed on any number of VMs depending on how many nodes we want as part of the cluster. The Cassandra admin service mentioned above creates keySpace on this running Cassandra Cluster for further consumption 
-
-## How to deploy deploy
-
-We use BOSH to deploy Cassandra Broker and Cassandra Nodes (Running Cassandra server). Both Broker and Cassandra are intergrated with monit which will restart broker and Cassandra Process in case of VM is restarted or process in crashed
-
-* bosh create release --force (from the parent directory)
-* Upload the release to the Bosh Director (bosh upload release)
-* Deploy the release using manifest file (Sample manifest file can be found cassandra_broker.yml)
-
-##Configuring CF to use Cassandra service
-### Authentication
-According to http://docs.gopivotal.com/pivotalcf/services/managing-service-brokers.html brokers should use HTTP basic authentication to authenticate clients. The "cf create-service-broker" command expects the credentials for the cloud controller to authenticate itself to the broker. This is set in the broker in the config-context.xml file, the values in p4 for testing are admin/password.
-
-Use cf add-service-broker command to add the cassandra broker for consumption
-
-```sh
-cf create-service-broker
-name> anyName
-URL> http://<IP of broker deployed via bosh>:8080
-It will prompt for username and password use admin/password
-```
-After the broker is added to CF the service plan needs to be made public. You can read here on how to make service plans public. http://docs.pivotal.io/pivotalcf/services/access-control.html
-
-### Available Plans
-
-There are 2 Plans available for Cassandra
-* Developer - This plan deletes the cassandra keySpace when service is deleted
-* Production - This plan won't delete any data even if service is deleted
+- BOSH-Lite support and other goodies for release authors.
 
 
+## Prerequisites
 
-## Cassandra Cluster Layout
-The Cassandra Cluster layout and deployment is highly configurable and creates a keySpace using NetworktopologyStrategy
+You need to ensure your BOSH director has `post-deploy` scripts enabled. This
+is usually the case with [standard bosh-deployment][std-bosh-deployment]. See
+the [post-deploy documentation][post-deploy] for more information about this.
 
-### Snitch
-We use Property file Snitch for Cassandra to support multiple data center in future which is populated via topology properties segment mentioned in the next section
+[post-deploy]: https://bosh.io/docs/post-deploy/#director-configuration
+[std-bosh-deployment]: https://github.com/cloudfoundry/bosh-deployment/blob/92917e7/bosh.yml#L87
 
-### Configuring Cassandra Configuration
 
-Sample Cassandra properties via manifest
-```sh
-properties:
-  cassandra_server:
-     cluster_name: <%= cassandra_cluster_name %>
-     num_tokens: 256
-     internode_encryption: none
-     client_server_encryption: false
-     seeds: 10.8.5.x,10.8.5.y,10.8.5.z
-     persistent_directory: /var/vcap/store/cassandra_server
-     max_heap_size: 4G
-     heap_newsize: 800M
-     topology:
-       - 10.8.5.x=DC1:RAC1
-       - 10.8.5.y=DC1:RAC1
-       - 10.8.5.z=DC1:RAC1
-       - 10.8.5.a=DC1:RAC1
-       - 10.8.5.b=DC1:RAC1 
-```      
- 
+## Usage
 
-The Cassandra properties files are made configurable via BOSH erb files and are available in directory config/
+Provided that you have a properly targeted BOSH director, here is how you
+would deploy a Cassandra cluster:
 
-The Data center layout is configurable and can be configured via deployment manifest file via the Topology section mentioned above
+```bash
+git clone https://github.com/orange-cloudfoundry/cassandra-boshrelease.git
+cd cassandra-boshrelease
 
-##Upgrades
+bosh create-release
+bosh upload-release
 
-Upgrading Cassandra with a new Cassandra version or with some changes in the properties is quite straightforward
+>> depl-state.yml; chmod 600 depl-state.yml # just making sure the secrets are not readable by everyone
 
-Since the deployment of the Cassandra Cluster is controlled via Bosh, we leverage BOSH functionality to do any version/property upgrade.
-
-###Upgrading Casandra Version
-* Replace the Blob with the new version in the location blobs/cassandra/
-* In the packaging script change the version name, scripts available at packages/cassandra/
-* create release and deploy
-
-###Upgrading/Updating Cassandra YAML
-* Change the properties file present here jobs/cassandra_server/templates/config/
-* There are certain values which are configurable via manifest file itself and mentioned in the above segment
-* create release and deploy
-
-##Debugging
-
-Bosh vms will list out the IP address for Cassandra VMs. Cassandra data is store in persistent directory /var/vcap/store/cassandra_server 
-
-###Log Files
-
-There are 3 places that have log files related to cassandra
-* Cassandra Broker - The logs can be found at /var/vcap/sys/log/cassandra_broker. This will basically log all the service broker code about creation/deletion of service/keyspaces etc.
-* Cassandra Server - The logs can be found at /var/vcap/sys/log/cassandra_server. This will basically log the cassandra server startup logs and is helpful in determing what went wrong during startup
-* Cassandra runtime log - The logs can be found at /var/vcap/store/cassandra_server/system.log in the same directory where data/commitlog is present.
-
-###Running Nodetool/Cassandra-cli
-
-If you are SSH'ed into the cassandra VM and need to run the nodetool or cassandra-cli provided out of the box from cassandra, run this command from with the Casasndra VM
-```sh
-cd /var/vcap/packages/cassandra/bin
-```
-To run nodetool run this command 
-```sh
-"JAVA_HOME=/var/vcap/packages/java/jre1.7.0_55 CASSANDRA_CONF=/var/vcap/jobs/cassandra_server/conf ./nodetool status"
-```
-To run cassandra-cli run this command 
-```sh
-"JAVA_HOME=/var/vcap/packages/java/jre1.7.0_55 CASSANDRA_CONF=/var/vcap/jobs/cassandra_server/conf ./cassandra-cli"
+bosh -d cassandra deploy deployment/cassandra.yml \
+    --vars-file deployment/default-vars.yml \
+    --vars-store depl-state.yml
 ```
 
-##Cleanup/ Removing snapshot
+In a Cloud Foundry environment, here is how you deploy the Cassandra cluster
+with its Service Broker, and how you would register the latter to Cloud
+Foundry:
 
-When a keyspace is deleted/dropped cassandra takes a snapshot of the keyspace for security/backup purpose. if you wish to remove the snapshot you will have to do it manually by running this command
-```sh
-JAVA_HOME=/var/vcap/packages/java/jre1.7.0_55 CASSANDRA_CONF=/var/vcap/jobs/cassandra_server/conf ./nodetool clearsnapshot  
+```bash
+bosh -d cassandra deploy deployment/cassandra.yml \
+    --vars-file deployment/default-vars.yml \
+    -o deployment/operations/cf-service-broker.yml \
+    --vars-store depl-state.yml
+
+bosh -d cassandra run-errand broker-registrar
 ```
 
-##Future Enhancements
 
-###Authorization
+## Deployment manifests
 
-Currently the Cassandra keySpace created via service can be used by any user if they have the Cassandra nodes IP address. In future this can be avoided by creating authorization per keySpace and return back credential to access that keySpace only to the app/user who consumes that service.
+### BOSH 2.0 manifests
+
+See the documentation in the  [`cassandra-deployment`](https://github.com/orange-cloudfoundry/cassandra-deployment) repository.
+
+
+### BOSH 1.0 manifests
+
+Example BOSH 1.0 manifests can be found in th `manifests/` subdirectory. These
+are not ready-to-use manifests. They are meant to be examples only.
+
+
+## Notes on backuping with SHIELD
+
+The SHIELD v7 and v8 `cassandra` plugins are designed to help you backup your
+Cassandra cluster, one keyspace at a time.
+
+As a result of the backup strategy implemented by the SHIELD plugin, extra
+space is required on the persistent disk. As a rule of the thumb, you should
+provide twice the persistent storage required for your data.
+
+You'll find further information on backuping Cassandra with SHIELD in the
+[deployment manifests documentation](./deployment/README.md).
+
+
+## Cassandra admin tools
+
+These tools can be installed on Cassandra nodes by an optional BOSH Job, that
+you can opt in with the `admin-tools.yml` operations file.
+
+### Running Nodetool/CQL-sh/Cassandra-Stress
+
+If you are SSH'ed into the cassandra VM and need to run the standard `cqlsh`,
+`nodetool`, `sstableloader` utilities, wrapper scripts are provided by the
+`cassandra-admin-tools` optional job for convenience.
+
+```bash
+cd /var/vcap/jobs/cassandra-admin-tools/bin
+```
+
+To run the `nodetool` utility, run this command:
+
+```bash
+./node-tool.sh
+```
+
+To run the `cqlsh` CLI, run this command:
+
+```bash
+./cql-sh.sh"
+```
+
+
+### Cleanup/Removing snapshot
+
+When a keyspace is deleted/dropped cassandra takes a snapshot of the keyspace
+for security/backup purpose. if you wish to remove the snapshot you will have
+to do it manually by running this command:
+
+```bash
+cd /var/vcap/jobs/cassandra-admin-tools/bin
+./node-tool.sh clearsnapshot
+```

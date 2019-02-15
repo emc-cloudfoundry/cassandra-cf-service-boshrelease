@@ -1,0 +1,19 @@
+[authentication]
+username = cassandra
+password = <%= p("cassandra_password") %>
+
+[connection]
+hostname = <%= spec.ip %>
+port = <%= p('native_transport_port') %>
+ssl = <%= p("client_encryption.enabled") %>
+request_timeout = 1800
+
+[ssl]
+<% if p("client_encryption.enabled") -%>
+certfile = /var/vcap/jobs/cassandra/tls/ca.crt
+validate = true
+<%     if p("client_encryption.require_client_auth") -%>
+usercert = /var/vcap/jobs/cassandra/tls/node.crt
+userkey = /var/vcap/jobs/cassandra/tls/node.key
+<%     end -%>
+<% end -%>

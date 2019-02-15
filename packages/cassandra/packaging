@@ -3,10 +3,10 @@ set -u # report the usage of uninitialized variables
 
 # $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+
 export HOME=/var/vcap
 
+tar -zxf cassandra/apache-cassandra-3.11.1-bin.tar.gz
+cp -a apache-cassandra-3.11.1/* $BOSH_INSTALL_TARGET
 
-cp -a brokers $BOSH_INSTALL_TARGET/brokers
-
-tar -zxf cassandra/apache-cassandra-1.2.16-bin.tar.gz
-cp -a apache-cassandra-1.2.16/* $BOSH_INSTALL_TARGET
+cp $BOSH_COMPILE_TARGET/jmx_exporter/jmx_prometheus_javaagent-*.jar $BOSH_INSTALL_TARGET/lib

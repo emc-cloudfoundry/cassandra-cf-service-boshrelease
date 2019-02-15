@@ -1,0 +1,50 @@
+#!/bin/bash
+<%
+  require "shellwords"
+
+  def esc(x)
+      Shellwords.shellescape(x)
+  end
+%>
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/broker/helpers/ctl_setup.sh 'broker'
+
+export PORT=${PORT:-5000}
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    # store pid in $PIDFILE
+    echo $$ > $PIDFILE
+
+	exec chpst -u vcap:vcap $JAVA_HOME/bin/java  \
+               -server \
+               -Xms<%= esc(p("broker.heap_size")) %> \
+               -Xmx<%= esc(p("broker.heap_size")) %> \
+               -XX:+UseG1GC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=25 \
+               -Dlogging.config=$JOB_DIR/config/logback.xml \
+               -Dspring.config.location=file:$JOB_DIR/config/application.yml \
+               -Djavax.net.ssl.trustStore=/var/vcap/jobs/broker/tls/cassandra_truststore.jks \
+               -Djavax.net.ssl.trustStorePassword=<%= esc(p("broker.truststore_password")) %> \
+               -jar /var/vcap/packages/cassandra-broker-pkg/cassandra-broker.jar  \
+               >> $LOG_DIR/$JOB_NAME.log 2>&1
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: broker_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

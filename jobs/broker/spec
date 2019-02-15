@@ -1,0 +1,79 @@
+---
+name: broker
+
+packages:
+  - java-common
+  - openjdk
+  - cassandra-broker-pkg
+
+consumes:
+  - name: seeds
+    type: cassandra
+
+templates:
+  bin/pre-start: bin/pre-start
+  bin/generate-truststore.sh: bin/generate-truststore.sh
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/application.yml.erb: config/application.yml
+  config/logback.xml.erb: config/logback.xml
+  tls/cassandra_ca.crt: tls/cassandra_ca.crt
+
+properties:
+  broker.user:
+    description: cassandra service broker user
+    default: broker
+  broker.password:
+    description: cassandra service broker password
+  broker.port:
+    description: server http port
+    default: 8080
+  broker.heap_size:
+    description: |
+      The Java heap size to use, knowing that both minimum and maximum heap
+      size will be set to this value.
+    default: 256M
+  broker.log_level:
+    description: |
+      Log level for the Java application. Can be ERROR, WARN, INFO, DEBUG, or
+      any other log level supported by LogBack.
+    default: WARN
+    example: DEBUG
+  broker.truststore_password:
+    description: |
+      The password to use for the truststore.
+  broker.catalog_yml:
+    description: catalog description in marketplace
+    example: |
+    services:
+    - id: cassandra-service-broker
+      name: Apache Cassandra database 3.11 for Cloud Foundry
+      description: "Cassandra key-space on demand on shared cluster"
+      bindable: true
+      plans:
+        - id: cassandra-plan
+          name: default
+          description: This is a default cassandra plan.  All services are created equally.
+          free: false
+          metadata:
+            bullets:
+            - 100 MB Storage (not enforced)
+            - 40 concurrent connections (not enforced)
+            costs:
+              amount:
+                eur: 10.0
+              unit: MONTHLY
+            displayName: Default - Shared cassandra server
+      tags:
+        - cassandra
+        - document
+      metadata:
+        displayName: cassandra
+        imageUrl: http://cassandra.apache.org/img/cassandra_logo.png
+        longDescription: Creating a service Cassandra provisions a key-space. Binding applications provisions unique credentials for each application to access the keys-pace
+        providerDisplayName: Orange
+        documentationUrl: http://cassandra.apache.org/doc/latest
+        supportUrl: https://contact-us/
